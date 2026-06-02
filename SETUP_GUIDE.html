@@ -788,73 +788,147 @@ body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--text);ove
     </div>
   </div>
 
+  <!-- STEP 19 — Folder structure overview -->
   <div class="sc" style="border-left-color:#FFD600;">
-    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">19</div><div><div class="st">Create your post as a text file</div><div class="ss">In the content folder inside the linkedin-automation folder</div></div></div>
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">19</div><div><div class="st">Understand the folder structure first</div><div class="ss">Two folders — content for text, content_images for images</div></div></div>
+    <div class="sb">
+      <p>Inside the <strong>linkedin-automation</strong> folder you only need to work with two folders:</p>
+      <div style="background:#F8FAFF;border:2px dashed #C5D8F5;border-radius:14px;padding:20px 24px;font-family:'Fira Code',monospace;font-size:13px;line-height:2.2;margin:12px 0;">
+        <span style="color:#0A66C2;font-weight:700;">📁 linkedin-automation\</span><br/>
+        <span style="padding-left:20px;">├── </span><span style="color:#00C853;font-weight:700;">📁 content\</span><span style="color:#999;font-size:11px;">  ← PUT YOUR POST TEXT FILES HERE</span><br/>
+        <span style="padding-left:40px;">├── </span><span style="color:#374151;">post_1.txt</span><br/>
+        <span style="padding-left:40px;">├── </span><span style="color:#374151;">post_2.txt</span><br/>
+        <span style="padding-left:40px;">└── </span><span style="color:#374151;">post_3.txt</span><br/>
+        <span style="padding-left:20px;">├── </span><span style="color:#7C3AED;font-weight:700;">📁 content_images\</span><span style="color:#999;font-size:11px;">  ← PUT YOUR IMAGES HERE</span><br/>
+        <span style="padding-left:40px;">├── </span><span style="color:#374151;">post_1_image.jpg</span><br/>
+        <span style="padding-left:40px;">├── </span><span style="color:#374151;">post_2_image.png</span><br/>
+        <span style="padding-left:40px;">└── </span><span style="color:#374151;">post_3_image.jpeg</span><br/>
+        <span style="padding-left:20px;">└── </span><span style="color:#FF6D00;font-weight:700;">📁 posted\</span><span style="color:#999;font-size:11px;">  ← files move here automatically after posting</span>
+      </div>
+      <div class="ib info"><span class="i">🔑</span><div><strong>The key rule:</strong> The number in the text file name must match the number in the image name. <code>post_1.txt</code> pairs with <code>post_1_image.jpg</code>. The automation connects them automatically.</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 20 — Create post text file -->
+  <div class="sc" style="border-left-color:#FFD600;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">20</div><div><div class="st">Create your post as a text file in the content\ folder</div><div class="ss">Name it post_1.txt — second post is post_2.txt, and so on</div></div></div>
     <div class="sb">
       <div class="action-block">
         <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">1</div><div>Open the <strong>linkedin-automation</strong> folder on your laptop</div></div>
         <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">2</div><div>Open the <strong>content</strong> folder inside it</div></div>
-        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">3</div><div>Right-click inside the folder → <strong>New</strong> → <strong>Text Document</strong></div></div>
-        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">4</div><div>Name it <strong>post_1.txt</strong> (for the second post name it post_2.txt, and so on)</div></div>
-        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">5</div><div>Open the file and type your LinkedIn post</div></div>
+        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">3</div><div>Right-click inside → <strong>New</strong> → <strong>Text Document</strong></div></div>
+        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">4</div><div>Name it <strong>post_1.txt</strong> — the next post will be <strong>post_2.txt</strong>, then <strong>post_3.txt</strong>, etc.</div></div>
+        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">5</div><div>Open the file and type your LinkedIn post content</div></div>
       </div>
-      <div class="ib info"><span class="i">💡</span><div>You can use special formatting in your text — see the tags below.</div></div>
-      <div class="cw">
-        <div class="ct"><span class="cl">Example post_1.txt</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
-        <div class="cb">
-<span class="s">bold(</span>Excited to share something big today!<span class="s">)</span><br/><br/>
-<span class="s">italic(</span>Here is what we have been building for months.<span class="s">)</span><br/><br/>
-We finally shipped. <span class="s">bolditalic(</span>It was worth it.<span class="s">)</span><br/><br/>
-<span class="s">semibold(</span>What we built:<span class="s">)</span><br/>
-✅ Feature one<br/>
-✅ Feature two<br/><br/>
-#LinkedIn #Automation #BuildInPublic
-        </div>
-      </div>
-      <div class="bs">
-        <span class="badge" style="background:#E8F4FF;color:#0A66C2;">bold(your text)</span>
-        <span class="badge" style="background:#F3EEFF;color:#7C3AED;">italic(your text)</span>
-        <span class="badge" style="background:#E8FFF0;color:#00897B;">bolditalic(your text)</span>
-        <span class="badge" style="background:#FFFDE7;color:#FF8F00;">semibold(your text)</span>
-        <span class="badge" style="background:#FCE4F3;color:#AD1457;">cursive(your text)</span>
-        <span class="badge" style="background:#FFEAEA;color:#FF1744;">strikethrough(your text)</span>
-      </div>
+      <div class="ib warn"><span class="i">⚠️</span><div>Make sure the file extension is <strong>.txt</strong> — Windows sometimes hides extensions. If your file is named <em>post_1.txt.txt</em> it won't be detected. Check in File Explorer → View → tick "File name extensions".</div></div>
     </div>
   </div>
 
+  <!-- STEP 21 — Formatting tags -->
   <div class="sc" style="border-left-color:#FFD600;">
-    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">20</div><div><div class="st">Add a matching image (optional)</div><div class="ss">In the content_images folder — must be named to match the post number</div></div></div>
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">21</div><div><div class="st">Use formatting tags to make text bold, italic, and more</div><div class="ss">Wrap any text in a tag — e.g. bold(your text here)</div></div></div>
+    <div class="sb">
+      <p>LinkedIn doesn't support normal bold/italic formatting. Instead, wrap words in these special tags inside your .txt file:</p>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0;">
+        <div style="display:flex;align-items:center;gap:14px;background:#F8FAFF;border:1px solid #E8F0FE;border-radius:11px;padding:12px 16px;">
+          <code style="background:#1A1A2E;color:#A8FF78;padding:3px 12px;border-radius:6px;font-size:12px;flex-shrink:0;min-width:170px;">bold(your text)</code>
+          <span style="font-size:13px;color:#374151;flex:1;">Makes text <strong>𝗯𝗼𝗹𝗱</strong> — good for headings and key phrases</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:#F8FAFF;border:1px solid #E8F0FE;border-radius:11px;padding:12px 16px;">
+          <code style="background:#1A1A2E;color:#A8FF78;padding:3px 12px;border-radius:6px;font-size:12px;flex-shrink:0;min-width:170px;">italic(your text)</code>
+          <span style="font-size:13px;color:#374151;flex:1;">Makes text 𝘪𝘵𝘢𝘭𝘪𝘤 — good for quotes or highlights</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:#F8FAFF;border:1px solid #E8F0FE;border-radius:11px;padding:12px 16px;">
+          <code style="background:#1A1A2E;color:#A8FF78;padding:3px 12px;border-radius:6px;font-size:12px;flex-shrink:0;min-width:170px;">bolditalic(your text)</code>
+          <span style="font-size:13px;color:#374151;flex:1;">Makes text 𝒃𝒐𝒍𝒅 𝒊𝒕𝒂𝒍𝒊𝒄 combined</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:#F8FAFF;border:1px solid #E8F0FE;border-radius:11px;padding:12px 16px;">
+          <code style="background:#1A1A2E;color:#A8FF78;padding:3px 12px;border-radius:6px;font-size:12px;flex-shrink:0;min-width:170px;">semibold(your text)</code>
+          <span style="font-size:13px;color:#374151;flex:1;">Makes text 𝐬𝐥𝐢𝐠𝐡𝐭𝐥𝐲 𝐛𝐨𝐥𝐝 — serif bold style</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:#F8FAFF;border:1px solid #E8F0FE;border-radius:11px;padding:12px 16px;">
+          <code style="background:#1A1A2E;color:#A8FF78;padding:3px 12px;border-radius:6px;font-size:12px;flex-shrink:0;min-width:170px;">cursive(your text)</code>
+          <span style="font-size:13px;color:#374151;flex:1;">Makes text 𝒸𝓊𝓇𝓈𝒾𝓋𝑒 — elegant script style</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:#F8FAFF;border:1px solid #E8F0FE;border-radius:11px;padding:12px 16px;">
+          <code style="background:#1A1A2E;color:#A8FF78;padding:3px 12px;border-radius:6px;font-size:12px;flex-shrink:0;min-width:170px;">strikethrough(your text)</code>
+          <span style="font-size:13px;color:#374151;flex:1;">Puts a line through text — g̶o̶o̶d̶ for crossed-out prices or old info</span>
+        </div>
+      </div>
+
+      <p>You can mix tags freely in the same post. Here is a full example:</p>
+      <div class="cw">
+        <div class="ct"><span class="cl">content/post_1.txt — full example</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb">
+<span class="s">bold(</span>Excited to share something big today!<span class="s">)</span><br/><br/>
+<span class="s">italic(</span>This is what we have been building for months.<span class="s">)</span><br/><br/>
+We finally launched. <span class="s">bolditalic(</span>It was worth the wait.<span class="s">)</span><br/><br/>
+<span class="s">semibold(</span>What is inside:<span class="s">)</span><br/>
+✅ Feature one<br/>
+✅ Feature two<br/>
+✅ Feature three<br/><br/>
+<span class="s">strikethrough(</span>Old price $500<span class="s">)</span>  Now just $99<br/><br/>
+<span class="s">cursive(</span>The journey was worth every step.<span class="s">)</span><br/><br/>
+#LinkedIn #BuildInPublic #Automation
+        </div>
+      </div>
+      <div class="ib tip"><span class="i">✅</span><div>Normal text (without any tag) appears as plain text on LinkedIn. Only text inside the tags gets special formatting.</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 22 — Add image -->
+  <div class="sc" style="border-left-color:#FFD600;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">22</div><div><div class="st">Add a matching image in content_images\ (optional)</div><div class="ss">The image name must match the post number exactly</div></div></div>
     <div class="sb">
       <div class="action-block">
         <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">1</div><div>Open the <strong>content_images</strong> folder inside the linkedin-automation folder</div></div>
-        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">2</div><div>Copy your image into this folder</div></div>
-        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">3</div><div>Rename it to match your post number — examples:</div></div>
+        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">2</div><div>Copy your image file into this folder</div></div>
+        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">3</div><div>Rename it to match the post number — see the rule below</div></div>
       </div>
-      <div class="cw">
-        <div class="ct"><span class="cl">Image naming rule</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
-        <div class="cb">
-<span class="k">post_1.txt</span>  →  image must be named  <span class="s">post_1_image.jpg</span><br/>
-<span class="k">post_2.txt</span>  →  image must be named  <span class="s">post_2_image.png</span><br/>
-<span class="k">post_3.txt</span>  →  image must be named  <span class="s">post_3_image.jpeg</span>
+
+      <div style="background:#1A1A2E;border-radius:14px;padding:18px 22px;margin:12px 0;">
+        <p style="color:rgba(255,255,255,.6);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">📌 Image naming rule — number must match</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-family:'Fira Code',monospace;font-size:12px;color:#FF7B72;min-width:120px;">post_1.txt</span>
+            <span style="color:rgba(255,255,255,.4);">→</span>
+            <span style="font-family:'Fira Code',monospace;font-size:12px;color:#A8FF78;">post_1_image.jpg</span>
+            <span style="font-size:11px;color:rgba(255,255,255,.4);">(also .jpeg or .png)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-family:'Fira Code',monospace;font-size:12px;color:#FF7B72;min-width:120px;">post_2.txt</span>
+            <span style="color:rgba(255,255,255,.4);">→</span>
+            <span style="font-family:'Fira Code',monospace;font-size:12px;color:#A8FF78;">post_2_image.png</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-family:'Fira Code',monospace;font-size:12px;color:#FF7B72;min-width:120px;">post_3.txt</span>
+            <span style="color:rgba(255,255,255,.4);">→</span>
+            <span style="font-family:'Fira Code',monospace;font-size:12px;color:#A8FF78;">post_3_image.jpeg</span>
+          </div>
         </div>
+        <p style="color:rgba(255,255,255,.5);font-size:11px;margin-top:12px;">✅ Accepted image formats: .jpg &nbsp;·&nbsp; .jpeg &nbsp;·&nbsp; .png</p>
       </div>
-      <div class="ib tip"><span class="i">✅</span><div>No image? That's completely fine — the post will go out as text-only automatically. No need to do anything extra.</div></div>
+
+      <div class="ib tip"><span class="i">✅</span><div><strong>No image?</strong> Completely fine — just don't add anything to content_images for that post. The text will post on its own automatically.</div></div>
+      <div class="ib err"><span class="i">🔴</span><div><strong>Common mistake:</strong> Naming the image <em>post_1.jpg</em> instead of <em>post_1_image.jpg</em>. The word <strong>_image</strong> must be in the name.</div></div>
     </div>
   </div>
 
+  <!-- STEP 23 — Upload via GitHub Desktop -->
   <div class="sc" style="border-left-color:#FFD600;">
-    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">21</div><div><div class="st">Upload your files to GitHub using GitHub Desktop</div><div class="ss">This is how the automation gets your content</div></div></div>
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">23</div><div><div class="st">Upload your files to GitHub using GitHub Desktop</div><div class="ss">This is how the automation gets your content — do this the night before</div></div></div>
     <div class="sb">
       <div class="action-block">
         <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">1</div><div>Open <strong>GitHub Desktop</strong></div></div>
-        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">2</div><div>Make sure <strong>linkedin-automation</strong> is selected as the current repository (shown at the top)</div></div>
-        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">3</div><div>On the left side you'll see your new files listed with a checkbox — they should already be ticked ✅</div></div>
-        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">4</div><div>At the bottom left, in the <strong>Summary</strong> box, type something like: <em>add post 1</em></div></div>
+        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">2</div><div>Make sure <strong>linkedin-automation</strong> is selected at the top of the window</div></div>
+        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">3</div><div>On the left side you will see your new files listed with a tick ✅ next to them</div></div>
+        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">4</div><div>At the bottom left, type a short description in the <strong>Summary</strong> box — e.g. <em>add post 1</em></div></div>
         <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">5</div><div>Click the blue <span class="btn">Commit to main</span> button</div></div>
-        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">6</div><div>Click <span class="btn">Push origin</span> (top right) — this uploads your files to GitHub</div></div>
+        <div class="action-step"><div class="ab-num" style="background:#FF8F00;color:#fff;">6</div><div>Click <span class="btn">Push origin</span> at the top right — this sends your files to GitHub</div></div>
       </div>
-      <div class="ib tip"><span class="i">✅</span><div>Files uploaded! The automation will pick them up at the next scheduled time (9AM IST). Do this the evening before you want to post.</div></div>
-      <div class="ib info"><span class="i">💡</span><div><strong>Pro tip — prepare a whole week in one go:</strong> Create post_1.txt through post_5.txt and their images on Sunday. Upload once. The automation posts one per day all week — you do nothing else.</div></div>
+      <div class="ib tip"><span class="i">✅</span><div>Files are now on GitHub. The automation picks them up at 9AM IST tomorrow.</div></div>
+      <div class="ib info"><span class="i">💡</span><div><strong>Batch-prepare a full week every Sunday:</strong> Create post_1.txt through post_5.txt and their images. Upload once on Sunday. The automation handles one post per day all week — you do nothing else until the next Sunday.</div></div>
     </div>
   </div>
 </div>
@@ -874,7 +948,7 @@ We finally shipped. <span class="s">bolditalic(</span>It was worth it.<span clas
   </div>
 
   <div class="sc" style="border-left-color:#00BFA5;">
-    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#00BFA5,#00695C);">22</div><div><div class="st">Trigger a manual run from your GitHub repo</div><div class="ss">Takes 1 minute</div></div></div>
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#00BFA5,#00695C);">24</div><div><div class="st">Trigger a manual run from your GitHub repo</div><div class="ss">Takes 1 minute</div></div></div>
     <div class="sb">
       <div class="action-block">
         <div class="action-step"><div class="ab-num" style="background:#00BFA5;">1</div><div>Go to your repo on <strong>github.com</strong></div></div>
@@ -888,7 +962,7 @@ We finally shipped. <span class="s">bolditalic(</span>It was worth it.<span clas
   </div>
 
   <div class="sc" style="border-left-color:#00BFA5;">
-    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#00BFA5,#00695C);">23</div><div><div class="st">What success looks like</div><div class="ss">Click the run → click the "post" job → look for these lines</div></div></div>
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#00BFA5,#00695C);">25</div><div><div class="st">What success looks like</div><div class="ss">Click the run → click the "post" job → look for these lines</div></div></div>
     <div class="sb">
       <div class="cw">
         <div class="ct"><span class="cl">Success — you should see these lines in the log</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
@@ -947,7 +1021,7 @@ We finally shipped. <span class="s">bolditalic(</span>It was worth it.<span clas
   </div>
 
   <div class="sc" style="border-left-color:#A78BFA;">
-    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#A78BFA,#6D28D9);">24</div><div><div class="st">Your daily or weekly routine</div><div class="ss">This is everything you ever need to do</div></div></div>
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#A78BFA,#6D28D9);">26</div><div><div class="st">Your daily or weekly routine</div><div class="ss">This is everything you ever need to do</div></div></div>
     <div class="sb">
       <ul class="cl-list">
         <li><div class="ck" style="background:#EDE9FE;">✍️</div>Write <strong>post_n.txt</strong> in the <strong>content</strong> folder — your LinkedIn post text</li>
@@ -960,7 +1034,7 @@ We finally shipped. <span class="s">bolditalic(</span>It was worth it.<span clas
   </div>
 
   <div class="sc" style="border-left-color:#A78BFA;">
-    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#A78BFA,#6D28D9);">25</div><div><div class="st">Change what time it posts (optional)</div><div class="ss">Default is 9AM India time — edit directly on GitHub</div></div></div>
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#A78BFA,#6D28D9);">27</div><div><div class="st">Change what time it posts (optional)</div><div class="ss">Default is 9AM India time — edit directly on GitHub</div></div></div>
     <div class="sb">
       <div class="action-block">
         <div class="action-step"><div class="ab-num" style="background:#A78BFA;">1</div><div>Go to your GitHub repo → open the <span class="click">.github</span> folder → open <span class="click">workflows</span> → click <span class="click">post.yml</span></div></div>
