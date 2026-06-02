@@ -1,0 +1,15 @@
+# Never commit credentials or auto-generated token files
+config.json
+refreshed_tokens.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Logs (optional — remove this line if you want logs in the repo)
+log.txt

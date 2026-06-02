@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>LinkedIn Auto-Poster — Setup Guide for Friends</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --blue:#0A66C2;--dblue:#084E96;--lblue:#E8F4FF;
+  --green:#00C853;--dgreen:#00897B;--lgreen:#E8FFF0;
+  --orange:#FF6D00;--lorange:#FFF3E0;
+  --pink:#E91E8C;--lpink:#FCE4F3;
+  --purple:#7C3AED;--lpurple:#F3EEFF;
+  --yellow:#FFD600;--lyellow:#FFFDE7;
+  --red:#FF1744;--lred:#FFEAEA;
+  --teal:#00BFA5;--lteal:#E0F7F4;
+  --navy:#0D0D1A;--dark:#1A1A2E;--mid:#2D2D44;
+  --text:#1E293B;--muted:#64748B;--white:#fff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--text);overflow-x:hidden;font-size:14px;line-height:1.7;}
+
+/* ── BG ── */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.1;animation:float 12s ease-in-out infinite;}
+.orb:nth-child(1){width:700px;height:700px;background:#0A66C2;top:-200px;left:-200px;}
+.orb:nth-child(2){width:500px;height:500px;background:#7C3AED;top:35%;right:-150px;animation-delay:4s;}
+.orb:nth-child(3){width:400px;height:400px;background:#00C853;bottom:0;left:20%;animation-delay:8s;}
+.orb:nth-child(4){width:300px;height:300px;background:#E91E8C;bottom:10%;right:25%;animation-delay:2s;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-35px);}}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ── LAYOUT ── */
+.page{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:28px 18px 80px;}
+
+/* ── STICKY NAV ── */
+#nav{position:fixed;top:50%;right:16px;transform:translateY(-50%);z-index:100;
+  background:rgba(13,13,26,.9);backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.08);border-radius:14px;
+  padding:10px 7px;display:flex;flex-direction:column;gap:7px;}
+.nd{width:10px;height:10px;border-radius:50%;cursor:pointer;opacity:.3;transition:all .3s;}
+.nd:hover,.nd.on{opacity:1;transform:scale(1.5);}
+
+/* ── COVER ── */
+.cover{
+  background:linear-gradient(135deg,#0A66C2 0%,#7C3AED 50%,#E91E8C 100%);
+  border-radius:24px;padding:56px 48px 48px;margin-bottom:24px;
+  position:relative;overflow:hidden;
+  box-shadow:0 24px 70px rgba(10,102,194,.4);
+}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(255,255,255,.07),transparent 60%);}
+.cr{position:absolute;border-radius:50%;border:1.5px solid rgba(255,255,255,.1);animation:rpulse 4s ease-in-out infinite;}
+.cr:nth-child(1){width:280px;height:280px;top:-70px;right:-70px;}
+.cr:nth-child(2){width:180px;height:180px;top:-10px;right:-10px;animation-delay:.8s;}
+.cr:nth-child(3){width:120px;height:120px;bottom:-40px;left:8%;animation-delay:1.6s;}
+@keyframes rpulse{0%,100%{opacity:.12;}50%{opacity:.3;transform:scale(1.04);}}
+.cover-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:7px 16px;border-radius:30px;margin-bottom:20px;animation:tagpulse 2.5s ease-in-out infinite;}
+@keyframes tagpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.2);}50%{box-shadow:0 0 0 8px rgba(255,255,255,0);}}
+.cover h1{font-family:'Poppins',sans-serif;font-size:40px;font-weight:900;color:#fff;line-height:1.18;margin-bottom:12px;text-shadow:0 3px 20px rgba(0,0,0,.2);}
+.cover h1 em{background:linear-gradient(90deg,#FFD600,#FF6D00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal;}
+.cover p{color:rgba(255,255,255,.82);font-size:15px;line-height:1.75;max-width:600px;margin-bottom:26px;}
+.pills{display:flex;gap:9px;flex-wrap:wrap;}
+.pill{background:rgba(255,255,255,.13);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:600;padding:6px 14px;border-radius:20px;transition:all .3s;}
+.pill:hover{background:rgba(255,255,255,.25);transform:translateY(-2px);}
+.cover-chars{position:absolute;right:48px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;animation:cfloat 3s ease-in-out infinite;}
+.cover-chars span{font-size:40px;display:block;filter:drop-shadow(0 3px 12px rgba(0,0,0,.3));}
+@keyframes cfloat{0%,100%{transform:translateY(-50%);}50%{transform:translateY(calc(-50% - 14px));}}
+
+/* ── ROADMAP ── */
+.roadmap{background:rgba(255,255,255,.03);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:18px 24px;margin-bottom:24px;display:flex;align-items:center;gap:5px;overflow-x:auto;}
+.rm{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;cursor:pointer;transition:all .3s;}
+.rm:hover{transform:translateY(-3px);}
+.rm-n{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;}
+.rm-l{font-size:9px;font-weight:700;color:rgba(255,255,255,.5);text-align:center;line-height:1.3;max-width:55px;}
+.rm-arr{color:rgba(255,255,255,.2);font-size:18px;flex-shrink:0;margin-bottom:16px;}
+
+/* ── PHASE HEADER ── */
+.ph{border-radius:18px;padding:20px 26px;margin-bottom:16px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;}
+.ph::after{content:'';position:absolute;right:-25px;top:-25px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.06);}
+.ph-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);animation:ibob 2.2s ease-in-out infinite;}
+@keyframes ibob{0%,100%{transform:scale(1);}50%{transform:scale(1.09);}}
+.ph-text .ph-sub{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:2px;}
+.ph-text h2{font-family:'Poppins',sans-serif;font-size:20px;font-weight:800;color:#fff;}
+.ph-text p{font-size:12px;color:rgba(255,255,255,.68);margin-top:2px;}
+
+/* ── STEP CARD ── */
+.sc{background:#fff;border-radius:18px;padding:26px 30px;margin-bottom:14px;position:relative;overflow:hidden;border-left:5px solid transparent;box-shadow:0 4px 24px rgba(0,0,0,.06);transition:transform .3s,box-shadow .3s;opacity:0;transform:translateY(18px);}
+.sc.vis{opacity:1;transform:translateY(0);transition:opacity .5s,transform .5s;}
+.sc:hover{transform:translateY(-4px);box-shadow:0 16px 44px rgba(0,0,0,.12);}
+.sh{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;}
+.sn{width:44px;height:44px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#fff;box-shadow:0 5px 16px rgba(0,0,0,.2);}
+.st{font-family:'Poppins',sans-serif;font-size:16px;font-weight:800;color:var(--dark);margin-bottom:2px;}
+.ss{font-size:11px;color:var(--muted);font-weight:600;}
+.sb{font-size:13px;color:#374151;line-height:1.85;}
+.sb p{margin-bottom:9px;}
+.sb ul,.sb ol{padding-left:20px;}
+.sb li{margin-bottom:6px;}
+
+/* ── CODE ── */
+.cw{margin:12px 0;}
+.ct{background:#161B22;border-radius:11px 11px 0 0;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;}
+.ct .cl{font-family:'Fira Code',monospace;font-size:10px;color:#484F58;letter-spacing:1px;text-transform:uppercase;}
+.dots{display:flex;gap:5px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.cb{background:#0D1117;border-radius:0 0 11px 11px;padding:16px 20px;font-family:'Fira Code',monospace;font-size:12.5px;line-height:2;color:#C9D1D9;overflow-x:auto;}
+.cb .c{color:#79C0FF;} .cb .p{color:#A5D6FF;} .cb .s{color:#A8FF78;}
+.cb .cm{color:#6A737D;} .cb .k{color:#FF7B72;} .cb .v{color:#FFA657;} .cb .o{color:#56D364;}
+
+/* ── INFO BOXES ── */
+.ib{display:flex;gap:12px;align-items:flex-start;padding:13px 17px;border-radius:13px;margin:11px 0;font-size:13px;line-height:1.7;}
+.ib .i{font-size:20px;flex-shrink:0;margin-top:1px;}
+.ib.tip{background:#E8FFF0;border-left:4px solid #00C853;}
+.ib.warn{background:#FFFDE7;border-left:4px solid #FFD600;}
+.ib.err{background:#FFEAEA;border-left:4px solid #FF1744;}
+.ib.info{background:#E8F4FF;border-left:4px solid #0A66C2;}
+.ib.pur{background:#F3EEFF;border-left:4px solid #7C3AED;}
+.ib.teal{background:#E0F7F4;border-left:4px solid #00BFA5;}
+.ib.ora{background:#FFF3E0;border-left:4px solid #FF6D00;}
+
+/* ── FLOW ── */
+.flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;margin:16px 0;overflow-x:auto;padding:4px 0;}
+.fb{background:#fff;border-radius:13px;padding:14px 12px;text-align:center;min-width:82px;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.07);transition:all .3s;}
+.fb:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.12);}
+.fb .fi{font-size:26px;display:block;margin-bottom:5px;}
+.fb .ft{font-size:10px;font-weight:800;color:var(--dark);line-height:1.3;}
+.fa{padding:0 4px;flex-shrink:0;display:flex;align-items:center;}
+.fa svg{animation:aslide 1.5s ease-in-out infinite;}
+@keyframes aslide{0%,100%{transform:translateX(0);}50%{transform:translateX(5px);opacity:.5;}}
+
+/* ── SECRET ROWS ── */
+.sg{display:flex;flex-direction:column;gap:8px;margin:12px 0;}
+.sg-label{background:#F1F5F9;border-radius:8px;padding:5px 12px;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#64748B;margin-top:6px;margin-bottom:2px;}
+.sr{display:flex;align-items:stretch;border-radius:11px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:all .2s;}
+.sr:hover{transform:translateX(4px);}
+.sr-n{background:#161B22;color:#79C0FF;font-family:'Fira Code',monospace;font-size:11.5px;font-weight:600;padding:12px 16px;min-width:275px;flex-shrink:0;display:flex;align-items:center;}
+.sr-d{background:#F8FAFF;color:#374151;font-size:12.5px;padding:12px 16px;flex:1;display:flex;align-items:center;border:1px solid #E8F0FE;border-left:none;}
+.sr-t{padding:12px 12px;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;flex-shrink:0;display:flex;align-items:center;white-space:nowrap;}
+
+/* ── CHECKLIST ── */
+.cl{list-style:none;display:flex;flex-direction:column;gap:8px;margin:12px 0;}
+.cl li{display:flex;align-items:center;gap:11px;background:#F8FAFF;padding:11px 15px;border-radius:11px;font-size:13px;color:#374151;border:1px solid #E8F0FE;transition:all .2s;}
+.cl li:hover{background:#EEF5FF;transform:translateX(4px);}
+.ck{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+
+/* ── TIMELINE ── */
+.tl{position:relative;padding-left:28px;margin:14px 0;}
+.tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#0A66C2,#7C3AED,#00C853,#E91E8C);}
+.ti{position:relative;margin-bottom:16px;}
+.ti-dot{position:absolute;left:-24px;top:5px;width:14px;height:14px;border-radius:50%;border:2.5px solid #fff;}
+.ti-body{background:#F8FAFF;border-radius:11px;padding:13px 16px;border:1px solid #E8F0FE;font-size:13px;color:#374151;line-height:1.7;}
+.ti-body strong{display:block;font-size:14px;font-weight:700;color:var(--dark);margin-bottom:3px;}
+
+/* ── ERROR CARDS ── */
+.err-card{border-radius:12px;padding:14px 18px;margin-bottom:10px;}
+.err-card .err-code{font-family:'Fira Code',monospace;font-size:11px;font-weight:700;margin-bottom:7px;}
+.err-card .err-fix{font-size:12.5px;color:#374151;line-height:1.7;}
+
+/* ── AUTOMATE CARD ── */
+.auto-card{background:linear-gradient(135deg,#1A1A2E,#2D2D44);border-radius:16px;padding:22px 24px;margin-top:14px;border:2px solid #FFD600;}
+.auto-card h3{font-family:'Poppins',sans-serif;font-size:15px;font-weight:800;color:#FFD600;margin-bottom:4px;}
+.auto-card p{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:16px;}
+.auto-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.auto-box{border-radius:12px;padding:16px;text-align:center;}
+.auto-val{font-family:'Fira Code',monospace;font-size:15px;font-weight:800;margin:6px 0 4px;}
+.auto-desc{font-size:11px;color:rgba(255,255,255,.6);line-height:1.5;}
+
+/* ── FINAL ── */
+.final{background:linear-gradient(135deg,#0A66C2,#7C3AED 50%,#E91E8C);border-radius:22px;padding:44px 38px;text-align:center;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(10,102,194,.35);margin-top:24px;}
+.final::before{content:'';position:absolute;top:-50px;left:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);}
+.final h2{font-family:'Poppins',sans-serif;font-size:30px;font-weight:900;color:#fff;margin-bottom:12px;}
+.final p{color:rgba(255,255,255,.82);font-size:14px;line-height:1.8;margin-bottom:22px;}
+
+/* ── REF CARD ── */
+.ref{background:linear-gradient(135deg,#1A1A2E,#2D2D44);border-radius:18px;padding:28px;margin-bottom:24px;}
+.ref h3{font-family:'Poppins',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:18px;}
+.ref-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.ref-col .ref-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:9px;}
+.ref-col .ref-items{font-family:'Fira Code',monospace;font-size:11.5px;line-height:2.3;color:#79C0FF;}
+
+/* ── BADGE STRIP ── */
+.bs{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0;}
+.badge{padding:5px 13px;border-radius:20px;font-size:11.5px;font-weight:700;}
+
+/* ── SECTION SPACER ── */
+.sw{margin-bottom:24px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:680px){
+  .cover h1{font-size:26px;} .cover-chars{display:none;}
+  .sr-n{min-width:150px;font-size:10px;}
+  .ref-grid{grid-template-columns:1fr;}
+  #nav{display:none;} .auto-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div id="bg">
+  <div class="orb"></div><div class="orb"></div>
+  <div class="orb"></div><div class="orb"></div>
+</div>
+<canvas id="stars"></canvas>
+
+<!-- Sticky Nav -->
+<div id="nav">
+  <div class="nd on" style="background:#0A66C2"  onclick="goto('top')"   title="Top"></div>
+  <div class="nd"    style="background:#0A66C2"  onclick="goto('p0')"    title="LinkedIn App"></div>
+  <div class="nd"    style="background:#7C3AED"  onclick="goto('p1')"    title="Get Tokens"></div>
+  <div class="nd"    style="background:#00C853"  onclick="goto('p2')"    title="Repo ✓"></div>
+  <div class="nd"    style="background:#FF6D00"  onclick="goto('p3')"    title="GH_PAT"></div>
+  <div class="nd"    style="background:#E91E8C"  onclick="goto('p4')"    title="9 Secrets"></div>
+  <div class="nd"    style="background:#FFD600"  onclick="goto('p5')"    title="Add Posts"></div>
+  <div class="nd"    style="background:#00BFA5"  onclick="goto('p6')"    title="Test Run"></div>
+  <div class="nd"    style="background:#FF1744"  onclick="goto('p7')"    title="Alerts"></div>
+  <div class="nd"    style="background:#A78BFA"  onclick="goto('p8')"    title="Daily Flow"></div>
+</div>
+
+<div class="page" id="top">
+
+<!-- ══════════ COVER ══════════ -->
+<div class="cover">
+  <div class="cr"></div><div class="cr"></div><div class="cr"></div>
+  <div class="cover-tag">🚀 Complete Setup Guide — LinkedIn Automation</div>
+  <h1>Post to LinkedIn Daily<br/><em>Even When Your Laptop Is Shut Down</em></h1>
+  <p>Follow these steps once. Your posts will go out automatically every day from <strong style="color:#FFD600;">GitHub's cloud</strong> — your laptop can be off, sleeping, or in another country. Fully free, zero maintenance, works forever.</p>
+  <div class="pills">
+    <div class="pill">☁️ GitHub Actions</div>
+    <div class="pill">🔄 Auto token refresh</div>
+    <div class="pill">🔒 Secrets auto-updated</div>
+    <div class="pill">🚨 Email alerts on failure</div>
+    <div class="pill">🔛 On/Off switch</div>
+    <div class="pill">🆓 100% Free</div>
+  </div>
+  <div class="cover-chars"><span>🤖</span><span>☁️</span><span>📝</span><span>🚀</span></div>
+</div>
+
+<!-- ══════════ ROADMAP ══════════ -->
+<div class="roadmap">
+  <div class="rm" onclick="goto('p0')"><div class="rm-n" style="background:linear-gradient(135deg,#0A66C2,#084E96)">0</div><div class="rm-l">LinkedIn<br/>App</div></div>
+  <div class="rm-arr">›</div>
+  <div class="rm" onclick="goto('p1')"><div class="rm-n" style="background:linear-gradient(135deg,#7C3AED,#4A00E0)">1</div><div class="rm-l">Get<br/>Tokens</div></div>
+  <div class="rm-arr">›</div>
+  <div class="rm" onclick="goto('p2')"><div class="rm-n" style="background:linear-gradient(135deg,#00C853,#00897B)">✓</div><div class="rm-l">Repo<br/>Live</div></div>
+  <div class="rm-arr">›</div>
+  <div class="rm" onclick="goto('p3')"><div class="rm-n" style="background:linear-gradient(135deg,#FF6D00,#BF360C)">3</div><div class="rm-l">GH_PAT<br/>Secret</div></div>
+  <div class="rm-arr">›</div>
+  <div class="rm" onclick="goto('p4')"><div class="rm-n" style="background:linear-gradient(135deg,#E91E8C,#880E4F)">4</div><div class="rm-l">9 Secrets<br/>+ Switch</div></div>
+  <div class="rm-arr">›</div>
+  <div class="rm" onclick="goto('p5')"><div class="rm-n" style="background:linear-gradient(135deg,#FFD600,#FF8F00)">5</div><div class="rm-l">Add<br/>Posts</div></div>
+  <div class="rm-arr">›</div>
+  <div class="rm" onclick="goto('p6')"><div class="rm-n" style="background:linear-gradient(135deg,#00BFA5,#00695C)">6</div><div class="rm-l">Test<br/>Run</div></div>
+  <div class="rm-arr">›</div>
+  <div class="rm" onclick="goto('p7')"><div class="rm-n" style="background:linear-gradient(135deg,#FF1744,#B71C1C)">7</div><div class="rm-l">Alerts</div></div>
+  <div class="rm-arr">›</div>
+  <div class="rm" onclick="goto('p8')"><div class="rm-n" style="background:linear-gradient(135deg,#A78BFA,#6D28D9)">8</div><div class="rm-l">Daily<br/>Flow</div></div>
+</div>
+
+<!-- ══════════ HOW IT WORKS ══════════ -->
+<div class="sc vis" style="background:linear-gradient(135deg,#1A1A2E,#2D2D44);border-radius:18px;padding:26px 30px;margin-bottom:24px;">
+  <h2 style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:5px;">⚡ How it works — the full automated loop</h2>
+  <p style="font-size:12px;color:rgba(255,255,255,.55);margin-bottom:18px;">Runs on GitHub's cloud every day at 9AM IST — <strong style="color:#FFD600;">your laptop can be completely shut down</strong></p>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+    <div style="background:#0D1F33;border-radius:13px;padding:16px;text-align:center;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:#79C0FF;text-transform:uppercase;margin-bottom:8px;">Step 1</div>
+      <div style="font-size:28px;margin-bottom:7px;">⏰</div>
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Cron fires</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;">GitHub cloud triggers the workflow at scheduled time</div>
+    </div>
+    <div style="background:#1A0D2E;border-radius:13px;padding:16px;text-align:center;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:#C084FC;text-transform:uppercase;margin-bottom:8px;">Step 2</div>
+      <div style="font-size:28px;margin-bottom:7px;">🔑</div>
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Token check</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;">If token expired, silently refreshes and saves new one</div>
+    </div>
+    <div style="background:#0D2218;border-radius:13px;padding:16px;text-align:center;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:#86EFAC;text-transform:uppercase;margin-bottom:8px;">Step 3</div>
+      <div style="font-size:28px;margin-bottom:7px;">📢</div>
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Post published</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;">Picks next post_n.txt + image, posts to your LinkedIn</div>
+    </div>
+    <div style="background:#2B0D18;border-radius:13px;padding:16px;text-align:center;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:#F9A8D4;text-transform:uppercase;margin-bottom:8px;">Step 4</div>
+      <div style="font-size:28px;margin-bottom:7px;">💾</div>
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Auto-archive</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;">Moves file to posted/, commits back to repo, loops</div>
+    </div>
+  </div>
+  <div class="ib teal" style="margin-top:14px;"><span class="i">♾️</span><div><strong>This loop repeats forever.</strong> Tokens auto-refresh, posts auto-archive, next post auto-queues. You only ever write new content and push.</div></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PHASE 0 — CREATE LINKEDIN APP
+══════════════════════════════════════════ -->
+<div class="sw" id="p0">
+  <div class="ph" style="background:linear-gradient(135deg,#0A66C2,#084E96);">
+    <div class="ph-icon">🏗️</div>
+    <div class="ph-text">
+      <div class="ph-sub">Phase 0 · One-time · ~5 min</div>
+      <h2>Create Your LinkedIn Developer App</h2>
+      <p>Posts always go to your personal profile — the company page is just a technical requirement</p>
+    </div>
+  </div>
+
+  <!-- Personal vs Company clarification -->
+  <div class="sc vis" style="border-left-color:#0A66C2;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#0A66C2,#084E96);">!</div><div><div class="st">Posts go to YOUR personal LinkedIn profile — not the company page</div><div class="ss">The company page is only needed to satisfy LinkedIn's app creation requirement</div></div></div>
+    <div class="sb">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div style="background:#FFEAEA;border:2px solid #FF1744;border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:26px;margin-bottom:7px;">🏢</div>
+          <div style="font-weight:800;color:#B71C1C;font-size:13px;margin-bottom:5px;">Company Page</div>
+          <div style="font-size:12px;color:#555;line-height:1.6;">Created <strong>once</strong> to satisfy LinkedIn's app requirement. You never touch it again.</div>
+        </div>
+        <div style="background:#E8FFF0;border:2px solid #00C853;border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:26px;margin-bottom:7px;">👤</div>
+          <div style="font-weight:800;color:#1B5E20;font-size:13px;margin-bottom:5px;">Your Personal Profile</div>
+          <div style="font-size:12px;color:#555;line-height:1.6;"><strong>Every automated post appears here.</strong> The script uses your personal access token.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 1 — Create Company Page -->
+  <div class="sc" style="border-left-color:#0A66C2;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#0A66C2,#084E96);">1</div><div><div class="st">Create a dummy LinkedIn Company Page</div><div class="ss">Takes 2 minutes — you'll never use it after this</div></div></div>
+    <div class="sb">
+      <ol>
+        <li>Go to <strong>linkedin.com/company/setup/new</strong> in your browser</li>
+        <li>Select <strong>Company</strong> as the page type</li>
+        <li>Fill in the form:</li>
+      </ol>
+      <div class="cw">
+        <div class="ct"><span class="cl">Company Page fields</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb">
+<span class="k">Name</span>         →  <span class="s">My LinkedIn Automation</span>  <span class="cm">(any name works)</span><br/>
+<span class="k">URL</span>          →  auto-fills — leave it<br/>
+<span class="k">Industry</span>     →  <span class="s">Technology, Information and Internet</span><br/>
+<span class="k">Company size</span> →  <span class="s">1-10 employees</span><br/>
+<span class="k">Company type</span> →  <span class="s">Self-employed</span>
+        </div>
+      </div>
+      <ol start="4">
+        <li>Tick the <strong>"I verify I am authorised..."</strong> checkbox</li>
+        <li>Click <strong>Create Page</strong></li>
+      </ol>
+      <div class="ib info"><span class="i">💡</span><div>You can also click <strong>"+ Create a new LinkedIn Page"</strong> directly from the app creation form — it opens in a new tab. Come back after.</div></div>
+    </div>
+  </div>
+
+  <!-- Step 2 — Create App -->
+  <div class="sc" style="border-left-color:#0A66C2;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#0A66C2,#084E96);">2</div><div><div class="st">Create the LinkedIn Developer App</div><div class="ss">linkedin.com/developers/apps/new</div></div></div>
+    <div class="sb">
+      <ol>
+        <li>Go to <strong>linkedin.com/developers/apps/new</strong></li>
+        <li>Fill in the form:</li>
+      </ol>
+      <div class="cw">
+        <div class="ct"><span class="cl">App creation form</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb">
+<span class="k">App name</span>          →  <span class="s">my-linkedin-autoposter</span><br/>
+<span class="k">LinkedIn Page</span>     →  type the company page name → select from dropdown<br/>
+<span class="k">Privacy policy URL</span> →  leave blank<br/>
+<span class="k">App logo</span>          →  upload any image  <span class="cm">(even a screenshot)</span><br/>
+<span class="k">Legal checkbox</span>    →  tick it
+        </div>
+      </div>
+      <ol start="3"><li>Click <strong>Create App</strong></li></ol>
+    </div>
+  </div>
+
+  <!-- Step 3 — Add BOTH products -->
+  <div class="sc" style="border-left-color:#0A66C2;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#0A66C2,#084E96);">3</div><div><div class="st">Enable BOTH required products — Products tab</div><div class="ss">Missing either one causes a scope error when running get_token.py</div></div></div>
+    <div class="sb">
+      <div class="ib err"><span class="i">🔴</span><div><strong>You need BOTH products.</strong> Adding only one gives a scope error. Add them one after the other in the Products tab.</div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin:14px 0;">
+        <div style="background:#E8FFF0;border:2px solid #00C853;border-radius:12px;padding:16px 18px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+            <span style="font-size:24px;">📢</span>
+            <div style="flex:1;"><strong style="font-size:14px;">Share on LinkedIn</strong><br/><span style="font-size:11px;color:#555;">Gives scope: <code>w_member_social</code> — allows posting</span></div>
+            <span style="background:#00C853;color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;">REQUIRED #1</span>
+          </div>
+          <p style="font-size:13px;color:#333;">Products tab → find <strong>Share on LinkedIn</strong> → click <strong>Request Access</strong> → turns green ✅</p>
+        </div>
+        <div style="background:#E8F4FF;border:2px solid #0A66C2;border-radius:12px;padding:16px 18px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+            <span style="font-size:24px;">🔐</span>
+            <div style="flex:1;"><strong style="font-size:14px;">Sign In with LinkedIn using OpenID Connect</strong><br/><span style="font-size:11px;color:#555;">Gives scopes: <code>openid</code> <code>profile</code> — identifies your account</span></div>
+            <span style="background:#0A66C2;color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;">REQUIRED #2</span>
+          </div>
+          <p style="font-size:13px;color:#333;">Products tab → find <strong>Sign In with LinkedIn using OpenID Connect</strong> → click <strong>Request Access</strong> → turns green ✅</p>
+        </div>
+      </div>
+      <div class="cw">
+        <div class="ct"><span class="cl">Products tab — what it should look like</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb"><span class="o">✅</span>  <span class="s">Share on LinkedIn</span>                           <span class="cm">← w_member_social</span><br/><span class="o">✅</span>  <span class="s">Sign In with LinkedIn using OpenID Connect</span>  <span class="cm">← openid profile</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 — Add redirect URL -->
+  <div class="sc" style="border-left-color:#0A66C2;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#0A66C2,#084E96);">4</div><div><div class="st">Add the redirect URL — Auth tab</div><div class="ss">Must be exact — any typo causes OAuth to fail</div></div></div>
+    <div class="sb">
+      <ol>
+        <li>Click the <strong>Auth</strong> tab in your app</li>
+        <li>Scroll to <strong>"Authorized redirect URLs for your app"</strong></li>
+        <li>Click <strong>Add redirect URL</strong> and paste exactly:</li>
+      </ol>
+      <div class="cw">
+        <div class="ct"><span class="cl">Redirect URL — paste exactly as shown</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb"><span class="s">http://localhost:8989/callback</span></div>
+      </div>
+      <ol start="4"><li>Click <strong>Update</strong></li></ol>
+      <div class="ib err"><span class="i">🔴</span><div><strong>Must be exactly this.</strong> No trailing slash. No https. No spaces. Anything different causes a redirect_uri_mismatch error.</div></div>
+    </div>
+  </div>
+
+  <!-- Step 5 — Copy credentials -->
+  <div class="sc" style="border-left-color:#0A66C2;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#0A66C2,#084E96);">5</div><div><div class="st">Copy Client ID and Client Secret — Auth tab</div><div class="ss">Save both to Notepad — you'll need them in the next step</div></div></div>
+    <div class="sb">
+      <ol>
+        <li>On the <strong>Auth</strong> tab, copy the <strong>Client ID</strong> → paste to Notepad</li>
+        <li>Click the 👁️ eye icon next to <strong>Client Secret</strong> to reveal it → copy → paste to Notepad</li>
+      </ol>
+      <div class="cw">
+        <div class="ct"><span class="cl">Save these to Notepad now</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb"><span class="k">Client ID</span>     →  <span class="s">86abc123def456</span>      <span class="cm">← copy this</span><br/><span class="k">Client Secret</span> →  <span class="s">xYzAbCdEfGhIjKl</span>    <span class="cm">← click eye icon, then copy</span></div>
+      </div>
+      <div class="ib tip"><span class="i">✅</span><div>LinkedIn app is ready! Now move to Phase 1 to run <code>get_token.py</code> and get your 4 token values.</div></div>
+    </div>
+  </div>
+
+  <!-- 2FA Note -->
+  <div class="sc" style="border-left-color:#0A66C2;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#0A66C2,#084E96);">💡</div><div><div class="st">If you have 2-Factor Authentication on LinkedIn</div><div class="ss">2FA only affects get_token.py — never affects daily posts</div></div></div>
+    <div class="sb">
+      <div class="tl">
+        <div class="ti"><div class="ti-dot" style="background:#0A66C2;"></div><div class="ti-body"><strong>Browser opens</strong> — LinkedIn login page appears</div></div>
+        <div class="ti"><div class="ti-dot" style="background:#7C3AED;"></div><div class="ti-body"><strong>Enter email + password</strong> as normal</div></div>
+        <div class="ti"><div class="ti-dot" style="background:#FF6D00;"></div><div class="ti-body"><strong>LinkedIn sends a 6-digit 2FA code</strong> via SMS or authenticator — enter it on screen</div></div>
+        <div class="ti"><div class="ti-dot" style="background:#E91E8C;"></div><div class="ti-body"><strong>LinkedIn shows permissions page</strong> — click Allow</div></div>
+        <div class="ti"><div class="ti-dot" style="background:#00C853;"></div><div class="ti-body"><strong>Tokens printed in terminal</strong> — copy all 6 values ✅</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="ib err" style="margin:0;"><span class="i">🔴</span><div><strong>2FA seen ONCE</strong> — only when running get_token.py. Have your phone ready.</div></div>
+        <div class="ib tip" style="margin:0;"><span class="i">✅</span><div><strong>2FA never affects daily posts</strong> — GitHub Actions uses the token silently, no login needed.</div></div>
+      </div>
+      <div class="ib warn" style="margin-top:10px;"><span class="i">⏱️</span><div>You have <strong>2 minutes</strong> to complete login. 2FA adds ~30 seconds — plenty of time with your phone nearby.</div></div>
+    </div>
+  </div>
+
+  <!-- Scope Error Reference -->
+  <div class="sc" style="border-left-color:#FF1744;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FF1744,#B71C1C);">⚠</div><div><div class="st">Scope Error Reference — if get_token.py fails in browser</div><div class="ss">Quick fix for each error code</div></div></div>
+    <div class="sb">
+      <div class="err-card" style="background:#FFEAEA;border:2px solid #FF1744;">
+        <div class="err-code" style="color:#B71C1C;">error=invalid_scope_error — "requested permission scope is not valid"</div>
+        <div class="err-fix"><strong>Missing:</strong> Sign In with LinkedIn using OpenID Connect<br/><strong>Fix:</strong> Products tab → find it → Request Access → re-run get_token.py</div>
+      </div>
+      <div class="err-card" style="background:#FFF3E0;border:2px solid #FF6D00;">
+        <div class="err-code" style="color:#BF360C;">error=unauthorized_scope_error — "w_member_social is not authorized"</div>
+        <div class="err-fix"><strong>Missing:</strong> Share on LinkedIn<br/><strong>Fix:</strong> Products tab → find it → Request Access → re-run get_token.py</div>
+      </div>
+      <div class="err-card" style="background:#FFEAEA;border:2px solid #FF1744;">
+        <div class="err-code" style="color:#B71C1C;">error=redirect_uri_mismatch</div>
+        <div class="err-fix"><strong>Wrong redirect URL.</strong> Auth tab → Authorized redirect URLs → must be exactly <code>http://localhost:8989/callback</code> (no trailing slash, no https) → Update → re-run</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PHASE 1 — GET TOKENS
+══════════════════════════════════════════ -->
+<div class="sw" id="p1">
+  <div class="ph" style="background:linear-gradient(135deg,#7C3AED,#4A00E0);">
+    <div class="ph-icon">🔑</div>
+    <div class="ph-text">
+      <div class="ph-sub">Phase 1 · One-time on your laptop</div>
+      <h2>Run get_token.py — Get Your 6 Token Values</h2>
+      <p>Browser opens, you log in once, tokens printed — copy all 6 to Notepad</p>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#7C3AED;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#7C3AED,#4A00E0);">6</div><div><div class="st">Run get_token.py from Command Prompt</div><div class="ss">Win + R → type cmd → Enter</div></div></div>
+    <div class="sb">
+      <div class="cw">
+        <div class="ct"><span class="cl">Command Prompt</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb"><span class="c">cd</span> <span class="p">/d D:\linkedin-automation</span><br/><span class="c">python</span> get_token.py</div>
+      </div>
+      <p>It will ask you to paste your Client ID and Client Secret — paste them from Notepad.</p>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#7C3AED;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#7C3AED,#4A00E0);">7</div><div><div class="st">Browser opens → log in → complete 2FA → click Allow</div><div class="ss">You have 2 minutes</div></div></div>
+    <div class="sb">
+      <div class="flow">
+        <div class="fb" style="border-top:3px solid #7C3AED;"><span class="fi">💻</span><div class="ft">Script<br/>runs</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#7C3AED" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #0A66C2;"><span class="fi">🌐</span><div class="ft">Browser<br/>opens</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#0A66C2" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #FF6D00;"><span class="fi">🔐</span><div class="ft">Login +<br/>2FA</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#FF6D00" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #E91E8C;"><span class="fi">✅</span><div class="ft">Click<br/>Allow</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00C853" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #00C853;"><span class="fi">🎉</span><div class="ft">6 tokens<br/>printed!</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#7C3AED;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#7C3AED,#4A00E0);">8</div><div><div class="st">Copy ALL 6 values from your terminal to Notepad</div><div class="ss">You'll paste these into GitHub Secrets in Phase 4</div></div></div>
+    <div class="sb">
+      <div class="cw">
+        <div class="ct"><span class="cl">Terminal output — copy everything below the line</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb">
+<span class="o">====================================================</span><br/>
+<span class="o">  SUCCESS — Copy these into GitHub Secrets</span><br/>
+<span class="o">====================================================</span><br/>
+<br/>
+  <span class="k">LI_CLIENT_ID</span>                 = <span class="s">86abc123def456</span><br/>
+  <span class="k">LI_CLIENT_SECRET</span>             = <span class="s">xYzAbC123456789</span><br/>
+  <span class="k">LI_ACCESS_TOKEN</span>              = <span class="s">AQXt...very_long_token</span><br/>
+  <span class="k">LI_ACCESS_TOKEN_EXPIRES_AT</span>   = <span class="s">1783000000</span><br/>
+  <span class="k">LI_REFRESH_TOKEN</span>             = <span class="s">AQXr...refresh_token</span><br/>
+  <span class="k">LI_REFRESH_TOKEN_EXPIRES_AT</span>  = <span class="s">1814000000</span>
+        </div>
+      </div>
+      <div class="ib warn"><span class="i">⚠️</span><div><strong>Save to Notepad now</strong> before closing the terminal. You'll paste them into GitHub Secrets shortly.</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PHASE 2 — REPO (ALREADY DONE)
+══════════════════════════════════════════ -->
+<div class="sw" id="p2">
+  <div class="ph" style="background:linear-gradient(135deg,#00C853,#00897B);">
+    <div class="ph-icon">🗂️</div>
+    <div class="ph-text">
+      <div class="ph-sub">Phase 2 · One-time · ~2 min</div>
+      <h2>Create Your GitHub Repo from Template</h2>
+      <p>One click copies all the code to your own private GitHub repo</p>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#00C853;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#00C853,#00897B);">9</div><div><div class="st">Create your repo from the template</div><div class="ss">Takes 1 minute — all code is copied automatically</div></div></div>
+    <div class="sb">
+      <div class="flow">
+        <div class="fb" style="border-top:3px solid #00C853;"><span class="fi">🌐</span><div class="ft">Open template<br/>link</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00C853" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #00C853;"><span class="fi">🟢</span><div class="ft">Click "Use<br/>this template"</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00C853" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #00C853;"><span class="fi">✏️</span><div class="ft">Name it<br/>linkedin-automation</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00C853" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #00C853;"><span class="fi">🔒</span><div class="ft">Set to<br/>Private</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00C853" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #00C853;"><span class="fi">✅</span><div class="ft">Create<br/>repo!</div></div>
+      </div>
+      <ol style="margin-top:14px;">
+        <li>Open this link: <strong>github.com/kavinparithi-works/linkedin-automation</strong></li>
+        <li>Click the green <strong>"Use this template"</strong> button (top right)</li>
+        <li>Click <strong>"Create a new repository"</strong></li>
+        <li>Repository name: <code>linkedin-automation</code></li>
+        <li>Set visibility to <strong>Private</strong></li>
+        <li>Click <strong>Create repository</strong></li>
+      </ol>
+      <div class="ib tip"><span class="i">✅</span><div>Your repo is created with all the code copied. Now continue to Phase 3 — you don't need to manually copy or download any files.</div></div>
+      <div class="ib info"><span class="i">💡</span><div>Your repo will be at: <code>github.com/YOUR-USERNAME/linkedin-automation</code></div></div>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#00C853;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#00C853,#00897B);">10</div><div><div class="st">Clone the repo to your laptop</div><div class="ss">So you can add post files and push them</div></div></div>
+    <div class="sb">
+      <div class="cw">
+        <div class="ct"><span class="cl">Command Prompt</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb">
+<span class="cm"># Replace YOUR-USERNAME with your GitHub username</span><br/>
+<span class="c">cd</span> <span class="p">/d D:\</span><br/>
+<span class="c">git clone</span> <span class="s">https://github.com/YOUR-USERNAME/linkedin-automation.git</span><br/>
+<span class="c">cd</span> <span class="p">linkedin-automation</span>
+        </div>
+      </div>
+      <div class="ib warn"><span class="i">⚠️</span><div>Don't have Git installed? Download from <strong>git-scm.com</strong> → install → restart Command Prompt.</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PHASE 3 — GH_PAT
+══════════════════════════════════════════ -->
+<div class="sw" id="p3">
+  <div class="ph" style="background:linear-gradient(135deg,#FF6D00,#BF360C);">
+    <div class="ph-icon">🪙</div>
+    <div class="ph-text">
+      <div class="ph-sub">Phase 3 · One-time · ~2 min</div>
+      <h2>Create a GitHub Personal Access Token (GH_PAT)</h2>
+      <p>Needed so the workflow can auto-update secrets and send failure email alerts</p>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#FF6D00;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FF6D00,#BF360C);">9</div><div><div class="st">Why is GH_PAT needed?</div><div class="ss">The built-in GITHUB_TOKEN cannot update secrets or create issues</div></div></div>
+    <div class="sb">
+      <ul>
+        <li>🔄 <strong>Auto-update GitHub Secrets</strong> when LinkedIn access token refreshes — so next run always has valid tokens</li>
+        <li>🚨 <strong>Create a GitHub Issue</strong> (which sends you an email) when a run fails</li>
+      </ul>
+      <div class="ib ora"><span class="i">🔑</span><div><strong>Most important new step.</strong> Without GH_PAT, token refresh works but new tokens won't be saved — the next run after expiry will fail with a 401 error.</div></div>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#FF6D00;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FF6D00,#BF360C);">10</div><div><div class="st">Generate a new PAT on GitHub</div><div class="ss">Profile picture → Settings → Developer settings → Personal access tokens → Tokens (classic)</div></div></div>
+    <div class="sb">
+      <div class="flow">
+        <div class="fb" style="border-top:3px solid #FF6D00;"><span class="fi">👤</span><div class="ft">Profile<br/>picture</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#FF6D00" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #FF6D00;"><span class="fi">⚙️</span><div class="ft">Settings</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#FF6D00" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #FF6D00;"><span class="fi">🔧</span><div class="ft">Developer<br/>settings</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#FF6D00" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #FF6D00;"><span class="fi">🪙</span><div class="ft">Tokens<br/>(classic)</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00C853" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #00C853;"><span class="fi">➕</span><div class="ft">Generate<br/>new token</div></div>
+      </div>
+      <ol style="margin-top:12px;">
+        <li>Click <strong>Generate new token (classic)</strong></li>
+        <li>Note: <code>LinkedIn Automation GH_PAT</code></li>
+        <li>Expiration: <strong>No expiration</strong></li>
+        <li>Tick the <strong>repo</strong> checkbox (top-level — ticks all sub-items)</li>
+        <li>Tick the <strong>workflow</strong> checkbox</li>
+        <li>Click <strong>Generate token</strong> at the bottom</li>
+        <li><strong>Copy the token immediately</strong> → paste to Notepad</li>
+      </ol>
+      <div class="ib err"><span class="i">🔴</span><div><strong>Copy it NOW.</strong> GitHub shows it only once. If you miss it, you must generate a new one.</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PHASE 4 — ADD ALL 9 SECRETS
+══════════════════════════════════════════ -->
+<div class="sw" id="p4">
+  <div class="ph" style="background:linear-gradient(135deg,#E91E8C,#880E4F);">
+    <div class="ph-icon">🔒</div>
+    <div class="ph-text">
+      <div class="ph-sub">Phase 4 · All credentials + controls</div>
+      <h2>Add All 9 Secrets to GitHub</h2>
+      <p>Repo → Settings → Secrets and variables → Actions → New repository secret</p>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#E91E8C;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#E91E8C,#880E4F);">11</div><div><div class="st">Navigate to repo Secrets page</div><div class="ss">Follow this exact path</div></div></div>
+    <div class="sb">
+      <div class="flow">
+        <div class="fb" style="border-top:3px solid #E91E8C;"><span class="fi">🗂️</span><div class="ft">Your repo</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#E91E8C" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #E91E8C;"><span class="fi">⚙️</span><div class="ft">Settings</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#E91E8C" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #E91E8C;"><span class="fi">🔒</span><div class="ft">Secrets &amp;<br/>variables</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#E91E8C" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #E91E8C;"><span class="fi">⚡</span><div class="ft">Actions</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00C853" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #00C853;"><span class="fi">➕</span><div class="ft">New repo<br/>secret</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#E91E8C;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#E91E8C,#880E4F);">12</div><div><div class="st">Add all 9 secrets — one by one</div><div class="ss">Click New repository secret → paste Name → paste Value → Add secret → repeat</div></div></div>
+    <div class="sb">
+      <div class="sg">
+        <div class="sg-label">🔑 GitHub Access</div>
+        <div class="sr">
+          <div class="sr-n">GH_PAT</div>
+          <div class="sr-d">Your GitHub Personal Access Token (repo + workflow scope) from Phase 3</div>
+          <div class="sr-t" style="background:#FF6D00;color:#fff;">Phase 3</div>
+        </div>
+
+        <div class="sg-label">🏢 LinkedIn App</div>
+        <div class="sr">
+          <div class="sr-n">LI_CLIENT_ID</div>
+          <div class="sr-d">From LinkedIn Developer App → Auth tab</div>
+          <div class="sr-t" style="background:#7C3AED;color:#fff;">LinkedIn App</div>
+        </div>
+        <div class="sr">
+          <div class="sr-n">LI_CLIENT_SECRET</div>
+          <div class="sr-d">From LinkedIn Developer App → Auth tab (click eye icon)</div>
+          <div class="sr-t" style="background:#7C3AED;color:#fff;">LinkedIn App</div>
+        </div>
+
+        <div class="sg-label">🔐 LinkedIn Tokens — from get_token.py terminal output</div>
+        <div class="sr">
+          <div class="sr-n">LI_ACCESS_TOKEN</div>
+          <div class="sr-d">Long token from get_token.py output</div>
+          <div class="sr-t" style="background:#0A66C2;color:#fff;">get_token.py</div>
+        </div>
+        <div class="sr">
+          <div class="sr-n">LI_ACCESS_TOKEN_EXPIRES_AT</div>
+          <div class="sr-d">Unix timestamp number e.g. 1783000000</div>
+          <div class="sr-t" style="background:#0A66C2;color:#fff;">get_token.py</div>
+        </div>
+        <div class="sr">
+          <div class="sr-n">LI_REFRESH_TOKEN</div>
+          <div class="sr-d">Refresh token from get_token.py output</div>
+          <div class="sr-t" style="background:#0A66C2;color:#fff;">get_token.py</div>
+        </div>
+        <div class="sr">
+          <div class="sr-n">LI_REFRESH_TOKEN_EXPIRES_AT</div>
+          <div class="sr-d">Unix timestamp number e.g. 1814000000</div>
+          <div class="sr-t" style="background:#0A66C2;color:#fff;">get_token.py</div>
+        </div>
+
+        <div class="sg-label">⚙️ Behaviour Controls</div>
+        <div class="sr">
+          <div class="sr-n">POST_SCHEDULE</div>
+          <div class="sr-d">weekdays  or  MON,WED,FRI  or  all  or  2026-06-15</div>
+          <div class="sr-t" style="background:#00C853;color:#fff;">You choose</div>
+        </div>
+        <div class="sr" style="border:2px solid #FFD600;">
+          <div class="sr-n" style="background:#1A1200;">AUTOMATE</div>
+          <div class="sr-d" style="background:#FFFDE7;"><strong>Active</strong> = posts run daily &nbsp;·&nbsp; <strong>Inactive</strong> = all posting paused</div>
+          <div class="sr-t" style="background:#FFD600;color:#1A1A2E;">Master Switch</div>
+        </div>
+      </div>
+      <div class="ib err"><span class="i">🔴</span><div><strong>Names are case-sensitive and must be exact.</strong> Copy-paste — even one wrong character causes a "missing environment variable" error.</div></div>
+      <div class="ib pur"><span class="i">🔄</span><div><strong>Tokens auto-refresh — never update manually.</strong> When the LinkedIn access token expires (~60 days), the workflow refreshes it silently and updates the secrets automatically.</div></div>
+    </div>
+  </div>
+
+  <!-- AUTOMATE SWITCH CARD -->
+  <div class="sc" style="border-left-color:#FFD600;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">🔛</div><div><div class="st">AUTOMATE — The Master On/Off Switch</div><div class="ss">Change this one secret anytime to pause or resume all posting</div></div></div>
+    <div class="sb">
+      <div class="auto-card">
+        <h3>🔛 AUTOMATE — Master Switch</h3>
+        <p>Change this single GitHub Secret to pause or resume all posting instantly</p>
+        <div class="auto-grid">
+          <div class="auto-box" style="background:#0D2B1A;border:2px solid #00C853;">
+            <div style="font-size:26px;">✅</div>
+            <div class="auto-val" style="color:#00C853;">Active</div>
+            <div class="auto-desc">Posts go out on schedule every day. Normal operation.</div>
+          </div>
+          <div class="auto-box" style="background:#2B0D0D;border:2px solid #FF1744;">
+            <div style="font-size:26px;">⛔</div>
+            <div class="auto-val" style="color:#FF1744;">Inactive</div>
+            <div class="auto-desc">Workflow runs but exits immediately. Nothing is posted.</div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:rgba(255,255,255,.7);font-weight:700;margin-bottom:10px;">To pause posting:</p>
+        <div class="flow" style="margin:0;justify-content:flex-start;">
+          <div class="fb" style="border-top:3px solid #FFD600;min-width:72px;"><span class="fi">🗂️</span><div class="ft">Your repo</div></div>
+          <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#FFD600" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="fb" style="border-top:3px solid #FFD600;min-width:72px;"><span class="fi">⚙️</span><div class="ft">Settings</div></div>
+          <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#FFD600" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="fb" style="border-top:3px solid #FFD600;min-width:72px;"><span class="fi">🔒</span><div class="ft">Secrets →<br/>Actions</div></div>
+          <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#FFD600" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="fb" style="border-top:3px solid #FFD600;min-width:72px;"><span class="fi">✏️</span><div class="ft">AUTOMATE<br/>→ Update</div></div>
+          <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#FF1744" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="fb" style="border-top:3px solid #FF1744;min-width:72px;"><span class="fi">⛔</span><div class="ft">Type<br/>Inactive</div></div>
+        </div>
+        <div class="ib tip" style="margin-top:12px;"><span class="i">💡</span><div>To resume: go back to the AUTOMATE secret → change <code>Inactive</code> to <code>Active</code> → save. Posts resume from the next scheduled run.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PHASE 5 — ADD POST CONTENT
+══════════════════════════════════════════ -->
+<div class="sw" id="p5">
+  <div class="ph" style="background:linear-gradient(135deg,#FFD600,#FF8F00);">
+    <div class="ph-icon">✍️</div>
+    <div class="ph-text">
+      <div class="ph-sub">Phase 5 · Ongoing — add before posting time</div>
+      <h2>Write Your Posts and Push to GitHub</h2>
+      <p>Write content locally, push to GitHub — workflow picks it up automatically</p>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#FFD600;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">13</div><div><div class="st">Create your post file in D:\linkedin-automation\content\</div><div class="ss">Name it post_1.txt, post_2.txt, etc.</div></div></div>
+    <div class="sb">
+      <div class="cw">
+        <div class="ct"><span class="cl">content/post_1.txt — example with formatting tags</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb">
+<span class="s">bold(</span>Excited to share something big today!<span class="s">)</span><br/><br/>
+<span class="s">italic(</span>This is what we've been building for months.<span class="s">)</span><br/><br/>
+After countless iterations, <span class="s">bolditalic(</span>we finally shipped.<span class="s">)</span><br/><br/>
+<span class="s">semibold(</span>Key highlights:<span class="s">)</span><br/>
+✅ Feature one<br/>✅ Feature two<br/><br/>
+<span class="s">strikethrough(</span>Old price: $500<span class="s">)</span> Now just $99<br/><br/>
+<span class="s">cursive(</span>The journey was worth every step.<span class="s">)</span><br/><br/>
+#BuildInPublic #LinkedIn #Automation
+        </div>
+      </div>
+      <div class="bs">
+        <span class="badge" style="background:#E8F4FF;color:#0A66C2;">bold(text)</span>
+        <span class="badge" style="background:#F3EEFF;color:#7C3AED;">italic(text)</span>
+        <span class="badge" style="background:#E8FFF0;color:#00897B;">bolditalic(text)</span>
+        <span class="badge" style="background:#FFFDE7;color:#FF8F00;">semibold(text)</span>
+        <span class="badge" style="background:#FCE4F3;color:#AD1457;">cursive(text)</span>
+        <span class="badge" style="background:#FFEAEA;color:#FF1744;">strikethrough(text)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#FFD600;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">14</div><div><div class="st">Add matching image in content_images\ (optional)</div><div class="ss">post_1_image.jpg / .jpeg / .png — must match the post number</div></div></div>
+    <div class="sb">
+      <div class="cw">
+        <div class="ct"><span class="cl">Naming convention</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb">
+<span class="cm"># Text file  →  Image file (number must match)</span><br/>
+<span class="o">content/post_1.txt</span>  →  <span class="s">content_images/post_1_image.jpg</span><br/>
+<span class="o">content/post_2.txt</span>  →  <span class="s">content_images/post_2_image.png</span><br/>
+<span class="o">content/post_3.txt</span>  →  <span class="s">content_images/post_3_image.jpeg</span>
+        </div>
+      </div>
+      <div class="ib tip"><span class="i">✅</span><div>No image? No problem. Script automatically posts text-only if no image is found.</div></div>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#FFD600;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">15</div><div><div class="st">Push files to GitHub</div><div class="ss">Do this the evening before posting day</div></div></div>
+    <div class="sb">
+      <div class="cw">
+        <div class="ct"><span class="cl">Command Prompt</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb">
+<span class="c">cd</span> <span class="p">/d D:\linkedin-automation</span><br/>
+<span class="c">git add</span> content/ content_images/<br/>
+<span class="c">git commit</span> -m <span class="s">"add post_1"</span><br/>
+<span class="c">git push</span>
+        </div>
+      </div>
+      <div class="ib info"><span class="i">💡</span><div><strong>Batch-prepare a full week every Sunday</strong> — create post_1.txt through post_5.txt + images, push once. Automation handles the rest all week with zero daily effort.</div></div>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#FFD600;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FFD600,#FF8F00);color:#1A1A2E;">📅</div><div><div class="st">POST_SCHEDULE — all options explained</div><div class="ss">Set via GitHub Secret</div></div></div>
+    <div class="sb">
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+        <div style="display:flex;align-items:center;gap:12px;background:#F8FAFF;border:1px solid #E8F0FE;border-radius:11px;padding:11px 15px;">
+          <code style="background:#1A1A2E;color:#A8FF78;padding:3px 10px;border-radius:6px;font-size:12px;">"all"</code>
+          <span style="font-size:13px;color:#374151;">Posts every pending file on every run — bulk publishing</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;background:#F8FAFF;border:1px solid #E8F0FE;border-radius:11px;padding:11px 15px;">
+          <code style="background:#1A1A2E;color:#A8FF78;padding:3px 10px;border-radius:6px;font-size:12px;">"weekdays"</code>
+          <span style="font-size:13px;color:#374151;">One post per run, Mon–Fri only, incremental (post_1 → post_2 → …)</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;background:#F8FAFF;border:1px solid #E8F0FE;border-radius:11px;padding:11px 15px;">
+          <code style="background:#1A1A2E;color:#A8FF78;padding:3px 10px;border-radius:6px;font-size:12px;">"2026-06-15"</code>
+          <span style="font-size:13px;color:#374151;">Posts once on that exact date only — good for announcements</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;background:#F8FAFF;border:1px solid #E8F0FE;border-radius:11px;padding:11px 15px;">
+          <code style="background:#1A1A2E;color:#A8FF78;padding:3px 10px;border-radius:6px;font-size:12px;">"MON,WED,FRI"</code>
+          <span style="font-size:13px;color:#374151;">One post per run on those days only — valid tokens: MON TUE WED THU FRI SAT SUN</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PHASE 6 — TEST RUN
+══════════════════════════════════════════ -->
+<div class="sw" id="p6">
+  <div class="ph" style="background:linear-gradient(135deg,#00BFA5,#00695C);">
+    <div class="ph-icon">🧪</div>
+    <div class="ph-text">
+      <div class="ph-sub">Phase 6 · Verify it works</div>
+      <h2>Trigger a Manual Test Run</h2>
+      <p>Don't wait for 9AM — run the action right now and watch the logs live</p>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#00BFA5;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#00BFA5,#00695C);">16</div><div><div class="st">Trigger the action manually from GitHub</div><div class="ss">Actions tab → LinkedIn Auto Poster → Run workflow</div></div></div>
+    <div class="sb">
+      <div class="flow">
+        <div class="fb" style="border-top:3px solid #00BFA5;"><span class="fi">🗂️</span><div class="ft">Your repo</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00BFA5" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #00BFA5;"><span class="fi">⚡</span><div class="ft">Actions<br/>tab</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00BFA5" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #00BFA5;"><span class="fi">📋</span><div class="ft">LinkedIn<br/>Auto Poster</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00BFA5" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #FF6D00;"><span class="fi">▶️</span><div class="ft">Run<br/>workflow</div></div>
+        <div class="fa"><svg width="26" height="16"><path d="M0 8 L19 8 M13 3 L19 8 L13 13" stroke="#00C853" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="fb" style="border-top:3px solid #00C853;"><span class="fi">🎉</span><div class="ft">Post<br/>live!</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#00BFA5;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#00BFA5,#00695C);">17</div><div><div class="st">What success looks like in the logs</div><div class="ss">Click the run → post job → Run poster step</div></div></div>
+    <div class="sb">
+      <div class="cw">
+        <div class="ct"><span class="cl">GitHub Actions log — success</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb">
+<span class="o">Fetching LinkedIn profile...</span><br/>
+<span class="o">Processing : post_1</span><br/>
+<span class="o">  Content  : post_1.txt</span><br/>
+<span class="o">  Image    : post_1_image.jpg</span><br/>
+<span class="o">  Uploading image...</span><br/>
+<span class="o">  Publishing post...</span><br/>
+<span class="o">  Published successfully.</span><br/>
+<span class="o">  Moved post_1.txt + post_1_image.jpg → posted/</span><br/>
+<span class="cm">── Update secrets after token refresh ──</span><br/>
+<span class="o">No token refresh occurred — secrets unchanged.</span><br/>
+<span class="cm">── Commit posted files ──</span><br/>
+<span class="o">Posted files committed and pushed.</span>
+        </div>
+      </div>
+      <div class="ib tip"><span class="i">🎉</span><div>See <strong>"Published successfully"</strong>? Check your LinkedIn profile — the post is live! The workflow has archived the file and committed it to <code>posted/</code>.</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PHASE 7 — FAILURE ALERTS
+══════════════════════════════════════════ -->
+<div class="sw" id="p7">
+  <div class="ph" style="background:linear-gradient(135deg,#FF1744,#B71C1C);">
+    <div class="ph-icon">🚨</div>
+    <div class="ph-text">
+      <div class="ph-sub">Phase 7 · Fully automatic — zero setup needed</div>
+      <h2>Failure Alerts — Auto GitHub Issue + Email</h2>
+      <p>If anything fails, you get an email automatically — no config needed</p>
+    </div>
+  </div>
+
+  <div class="sc vis" style="border-left-color:#FF1744;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FF1744,#B71C1C);">✓</div><div><div class="st">How failure alerts work — already wired in</div><div class="ss">No setup needed</div></div></div>
+    <div class="sb">
+      <div class="tl">
+        <div class="ti"><div class="ti-dot" style="background:#FF1744;"></div><div class="ti-body"><strong>🔴 Workflow fails</strong> — LinkedIn API error, expired token, no content, network issue, etc.</div></div>
+        <div class="ti"><div class="ti-dot" style="background:#FF6D00;"></div><div class="ti-body"><strong>🤖 GitHub auto-creates an Issue</strong> in your repo with a direct link to the failed run and common causes to check</div></div>
+        <div class="ti"><div class="ti-dot" style="background:#FFD600;"></div><div class="ti-body"><strong>📧 GitHub emails you</strong> at your GitHub email address — no paid plan, no webhook, no extra config needed</div></div>
+        <div class="ti"><div class="ti-dot" style="background:#00C853;"></div><div class="ti-body"><strong>🔧 You fix it, close the issue</strong> — most common fix: add new post files and push</div></div>
+      </div>
+      <div class="ib info"><span class="i">📧</span><div>GitHub emails you for Issues on repos you watch. Your own repo is auto-watched. To confirm: repo → Watch (top-right) → should say Watching.</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PHASE 8 — DAILY FLOW + TROUBLESHOOTING
+══════════════════════════════════════════ -->
+<div class="sw" id="p8">
+  <div class="ph" style="background:linear-gradient(135deg,#A78BFA,#6D28D9);">
+    <div class="ph-icon">📋</div>
+    <div class="ph-text">
+      <div class="ph-sub">Phase 8 · Ongoing</div>
+      <h2>Your Daily Routine + Troubleshooting</h2>
+      <p>The only thing you do — add the next post and push</p>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#A78BFA;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#A78BFA,#6D28D9);">18</div><div><div class="st">Your complete daily checklist</div><div class="ss">That's literally all you do</div></div></div>
+    <div class="sb">
+      <ul class="cl">
+        <li><div class="ck" style="background:#EDE9FE;">✍️</div>Write <code>post_n.txt</code> in <code>content\</code> with your post text and formatting tags</li>
+        <li><div class="ck" style="background:#EDE9FE;">🖼️</div>Optionally add <code>post_n_image.jpg</code> in <code>content_images\</code></li>
+        <li><div class="ck" style="background:#EDE9FE;">⬆️</div>Run <code>git add . &amp;&amp; git commit -m "add post_n" &amp;&amp; git push</code></li>
+        <li><div class="ck" style="background:#EDE9FE;">😴</div><strong>Shut down your laptop</strong> — GitHub's cloud fires at 9AM IST automatically. Your machine does not need to be on.</li>
+        <li><div class="ck" style="background:#EDE9FE;">📁</div>Files auto-move to <code>posted\</code> after publishing — queue advances</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#A78BFA;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#A78BFA,#6D28D9);">19</div><div><div class="st">Change posting time</div><div class="ss">Edit .github/workflows/post.yml → cron line (UTC times)</div></div></div>
+    <div class="sb">
+      <div class="cw">
+        <div class="ct"><span class="cl">post.yml — cron schedule (format: min hour * * *)</span><div class="dots"><div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div></div></div>
+        <div class="cb">
+<span class="k">cron:</span> <span class="s">"30 2 * * *"</span>   <span class="cm"># IST  8:00 AM</span><br/>
+<span class="k">cron:</span> <span class="s">"30 3 * * *"</span>   <span class="cm"># IST  9:00 AM  ← current default</span><br/>
+<span class="k">cron:</span> <span class="s">"30 4 * * *"</span>   <span class="cm"># IST 10:00 AM</span><br/>
+<span class="k">cron:</span> <span class="s">"30 6 * * *"</span>   <span class="cm"># IST 12:00 PM</span><br/>
+<span class="k">cron:</span> <span class="s">"30 12 * * *"</span>  <span class="cm"># IST  6:00 PM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc" style="border-left-color:#FF1744;">
+    <div class="sh"><div class="sn" style="background:linear-gradient(135deg,#FF1744,#B71C1C);">⚠</div><div><div class="st">Troubleshooting — complete error reference</div><div class="ss">Every error you might see, with exact fixes</div></div></div>
+    <div class="sb">
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <div class="ib err"><span class="i">🔴</span><div><strong>invalid_scope_error — "permission scope is not valid"</strong><br/>Missing product: <em>Sign In with LinkedIn using OpenID Connect</em><br/>→ Products tab → find it → Request Access → re-run get_token.py</div></div>
+        <div class="ib" style="background:#FFF3E0;border-left:4px solid #FF6D00;"><span class="i">🟠</span><div><strong>unauthorized_scope_error — "w_member_social is not authorized"</strong><br/>Missing product: <em>Share on LinkedIn</em><br/>→ Products tab → find it → Request Access → re-run get_token.py</div></div>
+        <div class="ib err"><span class="i">🔴</span><div><strong>redirect_uri_mismatch</strong><br/>Wrong redirect URL in LinkedIn app<br/>→ Auth tab → must be exactly <code>http://localhost:8989/callback</code> (no slash, no https) → Update → re-run</div></div>
+        <div class="ib err"><span class="i">🔴</span><div><strong>Missing environment variables (GitHub Actions)</strong><br/>A secret name is wrong or missing<br/>→ Repo → Settings → Secrets → compare each name exactly against the Phase 4 list</div></div>
+        <div class="ib err"><span class="i">🔴</span><div><strong>401 Unauthorized from LinkedIn API</strong><br/>Access token invalid or expired<br/>→ Run get_token.py → update LI_ACCESS_TOKEN and LI_ACCESS_TOKEN_EXPIRES_AT in GitHub Secrets</div></div>
+        <div class="ib warn"><span class="i">🟡</span><div><strong>No posts ready to publish</strong><br/>No post_*.txt files in content/<br/>→ Add content files and push to GitHub</div></div>
+        <div class="ib warn"><span class="i">🟡</span><div><strong>Nothing posts on weekends</strong><br/>Normal if POST_SCHEDULE = "weekdays"<br/>→ Change to "all" to post every day</div></div>
+        <div class="ib info"><span class="i">🔵</span><div><strong>Post goes out with no image</strong><br/>Image filename mismatch<br/>→ Must be exactly post_n_image.jpg where n matches the text file number</div></div>
+        <div class="ib info"><span class="i">🔵</span><div><strong>Workflow not firing at scheduled time</strong><br/>GitHub cron can delay up to 15 min. Repos inactive 60+ days have Actions paused<br/>→ Push any file to re-activate</div></div>
+        <div class="ib teal"><span class="i">🔵</span><div><strong>Refresh token expired (~1 year from now)</strong><br/>Run get_token.py locally → get new tokens → update all 4 LI_* token secrets in GitHub. Happens at most once a year.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ QUICK REFERENCE ══════════ -->
+<div class="ref sc vis">
+  <h3>⚡ Quick Reference — Everything at a Glance</h3>
+  <div class="ref-grid">
+    <div>
+      <div class="ref-lbl">9 GitHub Secrets</div>
+      <div class="ref-items">GH_PAT<br/>LI_CLIENT_ID<br/>LI_CLIENT_SECRET<br/>LI_ACCESS_TOKEN<br/>LI_ACCESS_TOKEN_EXPIRES_AT<br/>LI_REFRESH_TOKEN<br/>LI_REFRESH_TOKEN_EXPIRES_AT<br/>POST_SCHEDULE<br/><span style="color:#FFD600;font-weight:800;">AUTOMATE</span></div>
+    </div>
+    <div>
+      <div class="ref-lbl">Schedule Options</div>
+      <div class="ref-items" style="color:#A8FF78;">"all"<br/>"weekdays"<br/>"2026-06-15"<br/>"MON,WED,FRI"<br/>"SAT,SUN"<br/>"FRI"<br/><br/><span style="color:#FFD600;">AUTOMATE:</span><br/><span style="color:#56D364;">"Active"</span>  ← ON<br/><span style="color:#FF7B72;">"Inactive"</span> ← OFF</div>
+    </div>
+    <div>
+      <div class="ref-lbl">Formatting Tags</div>
+      <div class="ref-items" style="color:#FFA657;">bold(text)<br/>italic(text)<br/>bolditalic(text)<br/>semibold(text)<br/>cursive(text)<br/>strikethrough(text)</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ FINAL CARD ══════════ -->
+<div class="final sc vis">
+  <div style="font-size:42px;letter-spacing:8px;animation:cfloat 2.5s ease-in-out infinite;">🤖 ☁️ 📝 🚀 💼</div>
+  <h2 style="margin-top:20px;">Fully Automated. Truly Hands-Free.</h2>
+  <p>Your laptop can be <strong>completely shut down</strong>. Posts go live every day at 9AM IST from GitHub's cloud.<br/>Tokens auto-refresh. Posts auto-archive. Failures auto-alert you by email.<br/>You just write posts and push — everything else is handled forever.</p>
+  <div class="pills" style="justify-content:center;">
+    <div class="pill">🔒 your-username/linkedin-automation</div>
+    <div class="pill">⏰ 9AM IST daily</div>
+    <div class="pill">🔄 Auto token refresh</div>
+    <div class="pill">🚨 Email on failure</div>
+    <div class="pill">🆓 Free forever</div>
+  </div>
+</div>
+
+</div><!-- .page -->
+
+<script>
+/* ── Starfield ── */
+(function(){
+  const c=document.getElementById('stars'),ctx=c.getContext('2d');
+  let W,H,S=[];
+  function init(){W=c.width=innerWidth;H=c.height=innerHeight;S=[];for(let i=0;i<120;i++)S.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.2,o:Math.random()*.6+.1,s:Math.random()*.25+.04});}
+  function draw(){ctx.clearRect(0,0,W,H);S.forEach(s=>{s.y-=s.s;if(s.y<0)s.y=H;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${s.o})`;ctx.fill();});requestAnimationFrame(draw);}
+  window.addEventListener('resize',init);init();draw();
+})();
+
+/* ── Scroll reveal ── */
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');});},{threshold:.08});
+document.querySelectorAll('.sc').forEach(el=>{if(!el.classList.contains('vis'))obs.observe(el);});
+
+/* ── Sticky nav ── */
+const IDS=['top','p0','p1','p2','p3','p4','p5','p6','p7','p8'];
+const dots=document.querySelectorAll('.nd');
+window.addEventListener('scroll',()=>{
+  let cur=0;
+  IDS.forEach((id,i)=>{const el=document.getElementById(id);if(el&&scrollY>=el.offsetTop-200)cur=i;});
+  dots.forEach((d,i)=>d.classList.toggle('on',i===cur));
+});
+
+/* ── Smooth scroll ── */
+function goto(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
+</script>
+</body>
+</html>

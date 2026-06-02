@@ -1,0 +1,139 @@
+name: LinkedIn Auto Poster
+
+on:
+  schedule:
+    # ─────────────────────────────────────────────────────────────────
+    # Runs daily at 9:00 AM IST (3:30 AM UTC).
+    # To change the time edit the cron below (values are UTC):
+    #   IST  8:00 AM  →  "30 2 * * *"
+    #   IST  9:00 AM  →  "30 3 * * *"   ← current
+    #   IST 10:00 AM  →  "30 4 * * *"
+    #   IST  6:00 PM  →  "30 12 * * *"
+    # ─────────────────────────────────────────────────────────────────
+    - cron: "30 3 * * *"
+
+  # Manual trigger — run anytime from the Actions tab in GitHub
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # push archived files back to repo
+
+    steps:
+
+      # ── 1. Checkout ──────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0        # full history so rebase never fails
+          token: ${{ secrets.GH_PAT }}   # PAT so we can push + update secrets
+
+      # ── 2. Python ────────────────────────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      # ── 3. Dependencies ──────────────────────────────────────────
+      - name: Install dependencies
+        run: pip install requests
+
+      # ── 4. Run poster ────────────────────────────────────────────
+      - name: Run poster
+        id: poster
+        env:
+          LI_CLIENT_ID:                  ${{ secrets.LI_CLIENT_ID }}
+          LI_CLIENT_SECRET:              ${{ secrets.LI_CLIENT_SECRET }}
+          LI_ACCESS_TOKEN:               ${{ secrets.LI_ACCESS_TOKEN }}
+          LI_ACCESS_TOKEN_EXPIRES_AT:    ${{ secrets.LI_ACCESS_TOKEN_EXPIRES_AT }}
+          LI_REFRESH_TOKEN:              ${{ secrets.LI_REFRESH_TOKEN }}
+          LI_REFRESH_TOKEN_EXPIRES_AT:   ${{ secrets.LI_REFRESH_TOKEN_EXPIRES_AT }}
+          POST_SCHEDULE:                 ${{ secrets.POST_SCHEDULE }}
+          AUTOMATE:                      ${{ secrets.AUTOMATE }}
+        run: python poster.py
+
+      # ── 5. Update GitHub Secrets if token was refreshed ──────────
+      # poster.py writes refreshed_tokens.json when it refreshes the
+      # access token. This step reads that file and updates the secrets
+      # automatically so the next run has valid tokens.
+      - name: Update secrets after token refresh
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ -f refreshed_tokens.json ]; then
+            echo "Token was refreshed — updating GitHub Secrets..."
+            REPO="${{ github.repository }}"
+            for key in LI_ACCESS_TOKEN LI_ACCESS_TOKEN_EXPIRES_AT LI_REFRESH_TOKEN LI_REFRESH_TOKEN_EXPIRES_AT; do
+              value=$(python -c "import json,sys; d=json.load(open('refreshed_tokens.json')); print(d.get('$key',''))")
+              if [ -n "$value" ]; then
+                gh secret set "$key" --body "$value" --repo "$REPO"
+                echo "  Updated secret: $key"
+              fi
+            done
+            rm -f refreshed_tokens.json
+            echo "All refreshed secrets updated."
+          else
+            echo "No token refresh occurred — secrets unchanged."
+          fi
+
+      # ── 6. Commit archived posts back to repo ────────────────────
+      # Pulls latest first to avoid push conflicts, then commits any
+      # files moved to posted/ and removes them from content/ tree.
+      - name: Commit posted files
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Pull latest to avoid push conflicts on concurrent runs
+          git pull --rebase origin main
+
+          git add posted/ content/ content_images/
+
+          # Only commit if there are actual staged changes
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: archive posted files $(date -u '+%Y-%m-%d') [skip ci]"
+            git push origin main
+            echo "Posted files committed and pushed."
+          else
+            echo "No file changes to commit."
+          fi
+
+      # ── 7. Job summary ───────────────────────────────────────────
+      - name: Write job summary
+        if: always()
+        run: |
+          STATUS="${{ job.status }}"
+          DATE=$(date -u '+%Y-%m-%d %H:%M UTC')
+          echo "## LinkedIn Auto Poster — Run Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "$STATUS" = "success" ]; then
+            echo "✅ **Status:** Success" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Status:** $STATUS" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "📅 **Run time:** $DATE" >> $GITHUB_STEP_SUMMARY
+          echo "📋 **Schedule:** ${{ secrets.POST_SCHEDULE }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check the **Run poster** step logs above for full details." >> $GITHUB_STEP_SUMMARY
+
+      # ── 8. Failure alert ─────────────────────────────────────────
+      # Creates a GitHub Issue automatically if the workflow fails,
+      # so you get an email notification even without a paid plan.
+      - name: Open issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          DATE=$(date -u '+%Y-%m-%d %H:%M UTC')
+          REPO="${{ github.repository }}"
+          RUN_URL="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
+          gh issue create \
+            --repo "$REPO" \
+            --title "❌ LinkedIn Auto Poster failed on $DATE" \
+            --body "The scheduled LinkedIn post workflow failed.\n\n**Run:** $RUN_URL\n\nCheck the logs for details. Common causes:\n- LinkedIn access token expired (re-run \`get_token.py\` and update secrets)\n- No content files in \`content/\` folder\n- Network error from LinkedIn API"
